@@ -38,7 +38,7 @@ function Cart({ cartData }) {
     }
 
     const getCartItems = async (accessToken) => {
-        const response = await fetch('http://3.15.205.237:4000/api/v1/cart/view', {
+        const response = await fetch('http://18.225.10.147:4000/api/v1/cart/view', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

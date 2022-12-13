@@ -24,7 +24,7 @@ function SignUpForm({ handleSignUpClose }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ emailId: email, password: password, name: name })
         };
-        fetch('http://3.15.205.237:4000/api/v1/user/signUp', requestOptions)
+        fetch('http://18.225.10.147:4000/api/v1/user/signUp', requestOptions)
             .then(response => response.json())
             .then((data) => {
                 setEmail('')

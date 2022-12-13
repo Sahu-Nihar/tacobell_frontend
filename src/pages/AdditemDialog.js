@@ -28,7 +28,7 @@ export default function AddItemDialog({ open, handleClose, cartData }) {
             headers: { 'Content-Type': 'application/json', 'authorization': cartData.accessToken },
             body: JSON.stringify(itemsData)
         };
-        fetch('http://3.15.205.237:4000/api/v1/cart/add', requestOptions)
+        fetch('http://18.225.10.147:4000/api/v1/cart/add', requestOptions)
             .then(response => response.json())
             .then((data) => {
                 handleClose()
