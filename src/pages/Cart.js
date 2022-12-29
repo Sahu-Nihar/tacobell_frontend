@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import AddItemDialog from './AdditemDialog'
+import '../App.css'
 
 function Cart({ cartData }) {
-    // const [data, setData] = useState({})
-    // const [totalPrice, setTotalPrice] = useState(0)
-    // const [first, setFirst] = useState(true)
     const cartColumns = [
         {
             field: 'name',
@@ -34,20 +32,21 @@ function Cart({ cartData }) {
     }
     const handleAddClose = () => {
         setAddOpen(false)
-        getCartItems(cartData.accessToken)
+        getCartItems()
     }
 
     const getCartItems = async (accessToken) => {
-        const response = await fetch('http://18.225.10.147:4000/api/v1/cart/view', {
+        const response = await fetch(`https://v142vfs394.execute-api.us-east-2.amazonaws.com/dev/${cartData.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': accessToken
             }
         }).then(response => response.json())
-        .then((data) => {
-            setCartItems(data.data)
-        });
+            .then((data) => {
+                console.log("Data response in cart.js:", data);
+                setCartItems(data)
+            });
     }
 
     return (
@@ -55,20 +54,37 @@ function Cart({ cartData }) {
             <div>
                 <Box
                     sx={{
+                        marginBottom:'20px',
+                        '& .MuiDataGrid-root': {
+                            width: '500px',
+                            color: '#102770',
+                            marginLeft: '30%'
+                        },
                         '& .MuiDataGrid-columnHeaders': {
-                            backgroundColor: '#0d688d73',
+                            backgroundColor: '#102770',
                             fontWeight: '600',
+                            color: '#ffeba7',
                         },
                         '& .MuiDataGrid-columnHeader--moving': {
                             backgroundColor: 'transparent !important',
                         },
+                        '& .MuiDataGrid-row': {
+                            backgroundColor: '#102770',
+                            opacity: '0.6',
+                            color: '#ffeba7',
+                        },
+                        '& .MuiDataGrid-footerContainer': {
+                            backgroundColor: '#102770',
+                        }
                     }}
                 >
-                    <Button
+                    <a
+                        className="btn mt-4"
                         onClick={() => handleAddItemOpen()}
+                        style={{marginBottom:'20px', marginLeft: '56%'}}
                     >
                         Add Item
-                    </Button>
+                    </a>
 
                     {cartItems.items && <DataGrid
                         disableColumnSelector
@@ -78,8 +94,11 @@ function Cart({ cartData }) {
                         rowsPerPageOptions={[10]}
                         rows={cartItems.items}
                         columns={cartColumns}
-                    />}
-                    <Typography>Total price: {cartItems.totalPrice}</Typography>
+                        isRowSelectable={false}
+                        disableSelectionOnClick={true}
+                        backgroundColor='#ffeba7'
+                        width='500px' />}
+                    <Typography style={{marginTop:'20px', textAlign:'center'}}>Total price: {cartItems.totalPrice}</Typography>
                     {addOpen && <AddItemDialog open={addOpen} handleClose={handleAddClose} cartData={cartData} />}
                 </Box>
             </div>

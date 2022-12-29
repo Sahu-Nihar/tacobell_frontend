@@ -3,7 +3,7 @@ import { Box, Button, Divider, TextField } from '@mui/material'
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 export default function AddItemDialog({ open, handleClose, cartData }) {
     const [name1, setName1] = useState('')
-    const [price1, setPrice1] = useState('')
+    const [price1, setPrice1] = useState(0);
 
     const handleChange = (event) => {
         let target = event.target;
@@ -19,16 +19,16 @@ export default function AddItemDialog({ open, handleClose, cartData }) {
         handleClose()
     }
 
-
     const handleSubmit = async () => {
+        console.log("User Id status:", cartData.userId);
         var itemsData = []
         if (name1 !== '' && price1 !== 0) { itemsData.push({ name: name1, price: price1 }) }
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'authorization': cartData.accessToken },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(itemsData)
         };
-        fetch('http://18.225.10.147:4000/api/v1/cart/add', requestOptions)
+        fetch(`https://v142vfs394.execute-api.us-east-2.amazonaws.com/dev/${cartData.userId}`, requestOptions)
             .then(response => response.json())
             .then((data) => {
                 handleClose()
@@ -66,7 +66,6 @@ export default function AddItemDialog({ open, handleClose, cartData }) {
                             value={price1}
                             defaultValue={''}
                         />
-                        {/* <Button onClick={handleAdd(name1, price1)}>Add Item</Button> */}
                     </div>
                 </Box>
             </DialogContent>
